@@ -1,0 +1,443 @@
+// ============================================================
+//  CATEGORIES
+// ============================================================
+export const CATEGORIES = [
+    "Food & Dining",
+    "Transport",
+    "Shopping",
+    "Entertainment",
+    "Health",
+    "Utilities",
+    "Salary",
+    "Freelance",
+    "Investment",
+    "Other",
+  ];
+  
+  // ============================================================
+  //  CATEGORY ICONS  (emoji — no extra deps needed)
+  // ============================================================
+  export const CATEGORY_ICONS = {
+    "Food & Dining": "🍽️",
+    Transport: "🚗",
+    Shopping: "🛍️",
+    Entertainment: "🎬",
+    Health: "💊",
+    Utilities: "💡",
+    Salary: "💼",
+    Freelance: "💻",
+    Investment: "📈",
+    Other: "📦",
+  };
+  
+  // ============================================================
+  //  TRANSACTION TYPE
+  // ============================================================
+  export const TYPES = ["income", "expense"];
+  
+  // ============================================================
+  //  MOCK TRANSACTIONS  (6 months of data)
+  // ============================================================
+  export const INITIAL_TRANSACTIONS = [
+    // ── January ──────────────────────────────────────────────
+    {
+      id: "txn_001",
+      date: "2025-01-03",
+      description: "Monthly Salary",
+      category: "Salary",
+      type: "income",
+      amount: 85000,
+    },
+    {
+      id: "txn_002",
+      date: "2025-01-05",
+      description: "Grocery Store",
+      category: "Food & Dining",
+      type: "expense",
+      amount: 3200,
+    },
+    {
+      id: "txn_003",
+      date: "2025-01-08",
+      description: "Uber Ride",
+      category: "Transport",
+      type: "expense",
+      amount: 450,
+    },
+    {
+      id: "txn_004",
+      date: "2025-01-12",
+      description: "Netflix Subscription",
+      category: "Entertainment",
+      type: "expense",
+      amount: 649,
+    },
+    {
+      id: "txn_005",
+      date: "2025-01-15",
+      description: "Freelance Project Payment",
+      category: "Freelance",
+      type: "income",
+      amount: 22000,
+    },
+    {
+      id: "txn_006",
+      date: "2025-01-18",
+      description: "Electricity Bill",
+      category: "Utilities",
+      type: "expense",
+      amount: 1800,
+    },
+    {
+      id: "txn_007",
+      date: "2025-01-22",
+      description: "Amazon Shopping",
+      category: "Shopping",
+      type: "expense",
+      amount: 4500,
+    },
+    {
+      id: "txn_008",
+      date: "2025-01-27",
+      description: "Pharmacy",
+      category: "Health",
+      type: "expense",
+      amount: 980,
+    },
+  
+    // ── February ─────────────────────────────────────────────
+    {
+      id: "txn_009",
+      date: "2025-02-01",
+      description: "Monthly Salary",
+      category: "Salary",
+      type: "income",
+      amount: 85000,
+    },
+    {
+      id: "txn_010",
+      date: "2025-02-04",
+      description: "Restaurant Dinner",
+      category: "Food & Dining",
+      type: "expense",
+      amount: 2100,
+    },
+    {
+      id: "txn_011",
+      date: "2025-02-07",
+      description: "Metro Card Recharge",
+      category: "Transport",
+      type: "expense",
+      amount: 500,
+    },
+    {
+      id: "txn_012",
+      date: "2025-02-10",
+      description: "Mutual Fund Investment",
+      category: "Investment",
+      type: "income",
+      amount: 10000,
+    },
+    {
+      id: "txn_013",
+      date: "2025-02-14",
+      description: "Valentine's Day Gift",
+      category: "Shopping",
+      type: "expense",
+      amount: 3800,
+    },
+    {
+      id: "txn_014",
+      date: "2025-02-17",
+      description: "Doctor Visit",
+      category: "Health",
+      type: "expense",
+      amount: 1500,
+    },
+    {
+      id: "txn_015",
+      date: "2025-02-20",
+      description: "Internet Bill",
+      category: "Utilities",
+      type: "expense",
+      amount: 999,
+    },
+    {
+      id: "txn_016",
+      date: "2025-02-24",
+      description: "Freelance Logo Design",
+      category: "Freelance",
+      type: "income",
+      amount: 15000,
+    },
+  
+    // ── March ─────────────────────────────────────────────────
+    {
+      id: "txn_017",
+      date: "2025-03-01",
+      description: "Monthly Salary",
+      category: "Salary",
+      type: "income",
+      amount: 85000,
+    },
+    {
+      id: "txn_018",
+      date: "2025-03-05",
+      description: "Zomato Orders",
+      category: "Food & Dining",
+      type: "expense",
+      amount: 2800,
+    },
+    {
+      id: "txn_019",
+      date: "2025-03-09",
+      description: "Ola Cab",
+      category: "Transport",
+      type: "expense",
+      amount: 620,
+    },
+    {
+      id: "txn_020",
+      date: "2025-03-12",
+      description: "Spotify Premium",
+      category: "Entertainment",
+      type: "expense",
+      amount: 119,
+    },
+    {
+      id: "txn_021",
+      date: "2025-03-15",
+      description: "Clothing Haul",
+      category: "Shopping",
+      type: "expense",
+      amount: 6200,
+    },
+    {
+      id: "txn_022",
+      date: "2025-03-18",
+      description: "Water & Gas Bill",
+      category: "Utilities",
+      type: "expense",
+      amount: 1200,
+    },
+    {
+      id: "txn_023",
+      date: "2025-03-22",
+      description: "Stock Dividend",
+      category: "Investment",
+      type: "income",
+      amount: 4500,
+    },
+    {
+      id: "txn_024",
+      date: "2025-03-28",
+      description: "Gym Membership",
+      category: "Health",
+      type: "expense",
+      amount: 2000,
+    },
+  
+    // ── April ─────────────────────────────────────────────────
+    {
+      id: "txn_025",
+      date: "2025-04-01",
+      description: "Monthly Salary",
+      category: "Salary",
+      type: "income",
+      amount: 85000,
+    },
+    {
+      id: "txn_026",
+      date: "2025-04-04",
+      description: "Cafe Coffee Day",
+      category: "Food & Dining",
+      type: "expense",
+      amount: 780,
+    },
+    {
+      id: "txn_027",
+      date: "2025-04-07",
+      description: "Flight Ticket",
+      category: "Transport",
+      type: "expense",
+      amount: 8500,
+    },
+    {
+      id: "txn_028",
+      date: "2025-04-10",
+      description: "Freelance Web Dev",
+      category: "Freelance",
+      type: "income",
+      amount: 30000,
+    },
+    {
+      id: "txn_029",
+      date: "2025-04-14",
+      description: "Movie Tickets",
+      category: "Entertainment",
+      type: "expense",
+      amount: 900,
+    },
+    {
+      id: "txn_030",
+      date: "2025-04-18",
+      description: "Electricity Bill",
+      category: "Utilities",
+      type: "expense",
+      amount: 2100,
+    },
+    {
+      id: "txn_031",
+      date: "2025-04-22",
+      description: "Online Course",
+      category: "Other",
+      type: "expense",
+      amount: 3499,
+    },
+    {
+      id: "txn_032",
+      date: "2025-04-26",
+      description: "Pharmacy Refill",
+      category: "Health",
+      type: "expense",
+      amount: 650,
+    },
+  
+    // ── May ───────────────────────────────────────────────────
+    {
+      id: "txn_033",
+      date: "2025-05-01",
+      description: "Monthly Salary",
+      category: "Salary",
+      type: "income",
+      amount: 85000,
+    },
+    {
+      id: "txn_034",
+      date: "2025-05-05",
+      description: "Swiggy Orders",
+      category: "Food & Dining",
+      type: "expense",
+      amount: 3500,
+    },
+    {
+      id: "txn_035",
+      date: "2025-05-08",
+      description: "Petrol Fill",
+      category: "Transport",
+      type: "expense",
+      amount: 2200,
+    },
+    {
+      id: "txn_036",
+      date: "2025-05-12",
+      description: "Investment Return",
+      category: "Investment",
+      type: "income",
+      amount: 8000,
+    },
+    {
+      id: "txn_037",
+      date: "2025-05-15",
+      description: "Amazon Prime",
+      category: "Entertainment",
+      type: "expense",
+      amount: 1499,
+    },
+    {
+      id: "txn_038",
+      date: "2025-05-19",
+      description: "Myntra Shopping",
+      category: "Shopping",
+      type: "expense",
+      amount: 5100,
+    },
+    {
+      id: "txn_039",
+      date: "2025-05-23",
+      description: "Internet + OTT Bundle",
+      category: "Utilities",
+      type: "expense",
+      amount: 1299,
+    },
+    {
+      id: "txn_040",
+      date: "2025-05-28",
+      description: "Dental Checkup",
+      category: "Health",
+      type: "expense",
+      amount: 2500,
+    },
+  
+    // ── June ──────────────────────────────────────────────────
+    {
+      id: "txn_041",
+      date: "2025-06-01",
+      description: "Monthly Salary",
+      category: "Salary",
+      type: "income",
+      amount: 85000,
+    },
+    {
+      id: "txn_042",
+      date: "2025-06-04",
+      description: "Restaurant Lunch",
+      category: "Food & Dining",
+      type: "expense",
+      amount: 1600,
+    },
+    {
+      id: "txn_043",
+      date: "2025-06-07",
+      description: "Uber Pool",
+      category: "Transport",
+      type: "expense",
+      amount: 380,
+    },
+    {
+      id: "txn_044",
+      date: "2025-06-10",
+      description: "Freelance Content Writing",
+      category: "Freelance",
+      type: "income",
+      amount: 18000,
+    },
+    {
+      id: "txn_045",
+      date: "2025-06-14",
+      description: "Concert Tickets",
+      category: "Entertainment",
+      type: "expense",
+      amount: 2500,
+    },
+    {
+      id: "txn_046",
+      date: "2025-06-18",
+      description: "Water Bill",
+      category: "Utilities",
+      type: "expense",
+      amount: 700,
+    },
+    {
+      id: "txn_047",
+      date: "2025-06-22",
+      description: "Flipkart Sale",
+      category: "Shopping",
+      type: "expense",
+      amount: 7800,
+    },
+    {
+      id: "txn_048",
+      date: "2025-06-27",
+      description: "Health Insurance",
+      category: "Health",
+      type: "expense",
+      amount: 4200,
+    },
+  ];
+  
+  // ============================================================
+  //  HELPER — generate a unique id for new transactions
+  // ============================================================
+  export const generateId = () =>
+    `txn_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
