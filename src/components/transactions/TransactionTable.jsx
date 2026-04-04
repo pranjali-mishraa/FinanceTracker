@@ -156,61 +156,130 @@ export default function TransactionTable() {
         </div>
 
         {/* Mobile cards */}
-        <div className="md:hidden flex flex-col gap-3">
-          {paginated.length === 0 ? (
-            <div className="text-center py-16 text-orange-300 text-sm font-medium">
-              <div className="flex flex-col items-center gap-2">
-                <span className="text-4xl">😕</span>
-                No transactions match your filters
-              </div>
-            </div>
-          ) : paginated.map((txn) => (
-            <div key={txn.id}
-              className="rounded-2xl p-4 bg-gradient-to-br from-orange-50/80 to-pink-50/60
-                         border border-orange-100/80 hover:shadow-md hover:shadow-orange-100
-                         transition-all duration-200">
-              <div className="flex items-start justify-between mb-3">
-                <div>
-                  <p className="font-bold text-sm text-orange-950">{txn.description}</p>
-                  <p className="text-xs text-orange-400 mt-0.5 font-medium">
-                    {new Date(txn.date).toLocaleDateString("en-IN", {
-                      day: "2-digit", month: "short", year: "numeric",
-                    })}
-                  </p>
-                </div>
-                <span className={`text-sm font-bold
-                  ${txn.type === "income" ? "text-emerald-600" : "text-rose-500"}`}>
-                  {txn.type === "income" ? "+" : "−"}{fmt(txn.amount)}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex gap-2 flex-wrap">
-                  <span className="px-2.5 py-1 rounded-full text-xs font-bold
-                                   bg-gradient-to-r from-orange-100 to-pink-100
-                                   text-orange-800 border border-orange-200/60">
-                    {CATEGORY_ICONS[txn.category]} {txn.category}
-                  </span>
-                  <span className={`px-2.5 py-1 rounded-full text-xs font-bold
-                    ${txn.type === "income"
-                      ? "bg-emerald-100 text-emerald-700"
-                      : "bg-rose-100 text-rose-600"}`}>
-                    {txn.type === "income" ? "💰" : "💸"} {txn.type}
-                  </span>
-                </div>
-                {role === "admin" && (
-                  <div className="flex gap-1">
-                    <button onClick={() => openEdit(txn)}
-                      className="p-1.5 rounded-xl hover:bg-orange-100 text-orange-500
-                                 transition-all duration-200">✏️</button>
-                    <button onClick={() => handleDelete(txn.id)}
-                      className="p-1.5 rounded-xl hover:bg-rose-100 text-rose-400
-                                 transition-all duration-200">🗑️</button>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
+       {/* Mobile cards */}
+<div className="md:hidden flex flex-col gap-3">
+  {paginated.length === 0 ? (
+    <div className="text-center py-16 text-orange-300 text-sm font-medium">
+      <div className="flex flex-col items-center gap-2">
+        <span className="text-4xl">😕</span>
+        No transactions match your filters
+      </div>
+    </div>
+  ) : (
+    paginated.map((txn) => (
+      <div
+        key={txn.id}
+        style={{
+          background:     "rgba(255,255,255,0.92)",
+          backdropFilter: "blur(16px)",
+          border:         "1px solid rgba(249,115,22,0.08)",
+          borderRadius:   "20px",
+          padding:        "18px 20px",
+          boxShadow:      "0 4px 16px rgba(249,115,22,0.06), 0 1px 3px rgba(0,0,0,0.03)",
+          margin:         "0 4px",
+          transition:     "all 0.2s ease",
+        }}
+      >
+        {/* Top row — description + amount */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
+          <div>
+            <p style={{ fontSize: "15px", fontWeight: "700", color: "#1a0a00", marginBottom: "3px" }}>
+              {txn.description}
+            </p>
+            <p style={{ fontSize: "12px", color: "#c2855a", fontWeight: "500" }}>
+              {new Date(txn.date).toLocaleDateString("en-IN", {
+                day: "2-digit", month: "short", year: "numeric",
+              })}
+            </p>
+          </div>
+          <span style={{
+            fontSize:   "16px",
+            fontWeight: "800",
+            color:      txn.type === "income" ? "#16a34a" : "#e11d48",
+            marginLeft: "12px",
+            flexShrink: 0,
+          }}>
+            {txn.type === "income" ? "+" : "−"}{fmt(txn.amount)}
+          </span>
         </div>
+
+        {/* Divider */}
+        <div style={{ height: "1px", background: "rgba(249,115,22,0.08)", marginBottom: "12px" }} />
+
+        {/* Bottom row — category + type + actions */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+            {/* Category badge */}
+            <span style={{
+              padding:      "4px 12px",
+              borderRadius: "99px",
+              fontSize:     "11px",
+              fontWeight:   "700",
+              background:   "linear-gradient(135deg,#fff3e0,#fce7f3)",
+              color:        "#c2410c",
+              border:       "1px solid rgba(249,115,22,0.15)",
+            }}>
+              {CATEGORY_ICONS[txn.category]} {txn.category}
+            </span>
+
+            {/* Type badge */}
+            <span style={{
+              padding:      "4px 12px",
+              borderRadius: "99px",
+              fontSize:     "11px",
+              fontWeight:   "700",
+              background:   txn.type === "income" ? "#f0fdf4" : "#fff1f2",
+              color:        txn.type === "income" ? "#16a34a" : "#e11d48",
+              border:       txn.type === "income"
+                ? "1px solid #bbf7d0"
+                : "1px solid #fecdd3",
+            }}>
+              {txn.type === "income" ? "💰 Income" : "💸 Expense"}
+            </span>
+          </div>
+
+          {/* Admin actions */}
+          {role === "admin" && (
+            <div style={{ display: "flex", gap: "6px", marginLeft: "8px" }}>
+              <button
+                onClick={() => openEdit(txn)}
+                style={{
+                  width:        "34px",
+                  height:       "34px",
+                  borderRadius: "10px",
+                  background:   "#fff3e0",
+                  border:       "1px solid rgba(249,115,22,0.15)",
+                  display:      "flex",
+                  alignItems:   "center",
+                  justifyContent: "center",
+                  fontSize:     "14px",
+                  cursor:       "pointer",
+                  transition:   "all 0.2s ease",
+                }}
+              >✏️</button>
+              <button
+                onClick={() => handleDelete(txn.id)}
+                style={{
+                  width:        "34px",
+                  height:       "34px",
+                  borderRadius: "10px",
+                  background:   "#fff1f2",
+                  border:       "1px solid rgba(254,205,211,0.6)",
+                  display:      "flex",
+                  alignItems:   "center",
+                  justifyContent: "center",
+                  fontSize:     "14px",
+                  cursor:       "pointer",
+                  transition:   "all 0.2s ease",
+                }}
+              >🗑️</button>
+            </div>
+          )}
+        </div>
+      </div>
+    ))
+  )}
+</div>
 
         {/* Pagination */}
         {filtered.length > 0 && (
