@@ -1,3 +1,151 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.recharts-wrapper,
+.recharts-wrapper *,
+.recharts-surface {
+  outline: none !important;
+  border: none !important;
+}
+/* ── CSS Variables ──────────────────────────────────────────── */
+:root {
+  --peach-50:  #fff7f0;
+  --peach-100: #ffe8d6;
+  --peach-200: #ffd0b5;
+  --peach-300: #ffb088;
+  --peach-400: #ff8c5a;
+  --peach-500: #f97316;
+  --pink-soft:  #fce7f3;
+  --pink-light: #fbcfe8;
+  --gold:       #f59e0b;
+  --text-dark:  #431407;
+  --text-mid:   #9a3412;
+  --text-soft:  #c2410c;
+  --glass-bg:   rgba(255,255,255,0.55);
+  --glass-border: rgba(255,180,130,0.35);
+}
+
+/* ── Base ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--peach-50);
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  font-weight: 600;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--peach-100); border-radius: 99px; }
+::-webkit-scrollbar-thumb { background: var(--peach-300); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--peach-400); }
+
+/* ── Mesh background on page ────────────────────────────────── */
+.mesh-bg {
+  background-color: #fff7f0;
+  background-image:
+    radial-gradient(at 20% 10%, #ffd0b580 0px, transparent 55%),
+    radial-gradient(at 80% 0%,  #fce7f380 0px, transparent 50%),
+    radial-gradient(at 50% 90%, #ffb08840 0px, transparent 60%),
+    radial-gradient(at 90% 70%, #ffd0b560 0px, transparent 45%);
+  min-height: 100vh;
+}
+
+/* ── Glass card ─────────────────────────────────────────────── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow:
+    0 4px 24px rgba(249,115,22,0.08),
+    0 1px 4px  rgba(249,115,22,0.04),
+    inset 0 1px 0 rgba(255,255,255,0.7);
+}
+
+/* ── Gradient text ──────────────────────────────────────────── */
+.grad-text {
+  background: linear-gradient(135deg, #ea580c, #f97316, #db2777);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Display font ───────────────────────────────────────────── */
+.font-display { font-family: 'Playfair Display', serif; }
+
+/* ── Glow button ────────────────────────────────────────────── */
+.btn-glow {
+  background: linear-gradient(135deg, #f97316, #ec4899);
+  box-shadow: 0 4px 20px rgba(249,115,22,0.4);
+  transition: all 0.25s ease;
+}
+.btn-glow:hover {
+  box-shadow: 0 6px 28px rgba(249,115,22,0.6);
+  transform: translateY(-1px);
+}
+.btn-glow:active { transform: translateY(0); }
+
+/* ── Shimmer skeleton ───────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg,
+    var(--peach-100) 25%,
+    var(--peach-50)  50%,
+    var(--peach-100) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ── Fade-in-up animation ───────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+.fade-up          { animation: fadeInUp 0.5s ease forwards; }
+.fade-up-1        { animation: fadeInUp 0.5s 0.05s ease both; }
+.fade-up-2        { animation: fadeInUp 0.5s 0.10s ease both; }
+.fade-up-3        { animation: fadeInUp 0.5s 0.15s ease both; }
+.fade-up-4        { animation: fadeInUp 0.5s 0.20s ease both; }
+
+/* ── Pulse dot ──────────────────────────────────────────────── */
+@keyframes pulseDot {
+  0%,100% { transform: scale(1);   opacity: 1; }
+  50%      { transform: scale(1.4); opacity: 0.6; }
+}
+.pulse-dot { animation: pulseDot 1.8s ease-in-out infinite; }
+
+/* ── Number count-up (CSS trick via transition) ─────────────── */
+.num-transition { transition: all 0.6s cubic-bezier(0.4,0,0.2,1); }
+
+/* ── Progress bar fill ──────────────────────────────────────── */
+@keyframes fillBar {
+  from { width: 0%; }
+}
+.fill-bar { animation: fillBar 0.8s cubic-bezier(0.4,0,0.2,1) forwards; }
+
+/* ── Dark mode overrides ────────────────────────────────────── */
+.dark body,
+.dark .mesh-bg {
+  background-color: #1a0a00;
+  background-image:
+    radial-gradient(at 20% 10%, #431407aa 0px, transparent 55%),
+    radial-gradient(at 80% 0%,  #3b0764aa 0px, transparent 50%),
+    radial-gradient(at 50% 90%, #43140755 0px, transparent 60%);
+}
+.dark .glass {
+  background: rgba(30,12,0,0.6);
+  border-color: rgba(249,115,22,0.2);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+}

@@ -1,15 +1,14 @@
-import { theme } from "../theme";
 import InsightsPanel from "../components/insights/insightsPanel";
 
 export default function Insights() {
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className={`text-2xl font-bold ${theme.text.heading}`}>
-          Insights 💡
+    <div className="flex flex-col gap-5 max-w-7xl mx-auto">
+      <div className="fade-up">
+        <h1 className="font-display text-3xl font-bold grad-text leading-tight">
+          Insights
         </h1>
-        <p className={`text-sm ${theme.text.muted} mt-1`}>
-          Smart observations from your financial data
+        <p className="text-orange-400 text-sm mt-1.5 font-medium">
+          Smart observations from your financial data 💡
         </p>
       </div>
 

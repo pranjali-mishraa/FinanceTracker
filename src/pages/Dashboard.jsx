@@ -1,27 +1,26 @@
-import { theme } from "../theme";
-import SummaryCards from "../components/dashboard/SummaryCards";
-import BalanceTrendChart from "../components/dashboard/BalanceTrendChart";
+import SummaryCards           from "../components/dashboard/SummaryCards";
+import BalanceTrendChart      from "../components/dashboard/BalanceTrendChart";
 import SpendingBreakdownChart from "../components/dashboard/SpendingBreakdownChart";
 
 export default function Dashboard() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-7 max-w-7xl mx-auto">
 
-      {/* ── Page Title ─────────────────────────────────────── */}
-      <div>
-        <h1 className={`text-2xl font-bold ${theme.text.heading}`}>
-          Dashboard 📊
+      <div className="fade-up">
+        <h1 className="font-display text-4xl font-bold grad-text leading-tight">
+          Dashboard
         </h1>
-        <p className={`text-sm ${theme.text.muted} mt-1`}>
-          Your financial overview at a glance
+        <p className="text-orange-400  text-center mt-1.5 font-bolder">
+          Your complete financial overview at a glance 📊
         </p>
       </div>
 
-      {/* ── Summary Cards ──────────────────────────────────── */}
-      <SummaryCards />
+      {/* Cards — mb-4 gives breathing room before charts */}
+      <div className="mb-4">
+        <SummaryCards />
+      </div>
 
-      {/* ── Charts row — stack on mobile, side by side on lg ─ */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <BalanceTrendChart />
         <SpendingBreakdownChart />
       </div>
