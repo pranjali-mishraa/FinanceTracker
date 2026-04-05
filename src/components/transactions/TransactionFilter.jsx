@@ -2,8 +2,8 @@ import { useAppState, useAppDispatch, ACTIONS } from "../../context/AppContext";
 import { CATEGORIES } from "../../data/mockData";
 
 export default function TransactionFilters() {
-  const { filters } = useAppState();
-  const dispatch    = useAppDispatch();
+  const { filters, darkMode } = useAppState();
+  const dispatch              = useAppDispatch();
 
   const set = (key, value) =>
     dispatch({ type: ACTIONS.SET_FILTER, payload: { key, value } });
@@ -12,70 +12,133 @@ export default function TransactionFilters() {
     filters.search !== "" || filters.category !== "All" ||
     filters.type !== "All" || filters.sortBy !== "date_desc";
 
+  const cardStyle = {
+    background:     darkMode ? "#1e1e1e" : "rgba(255,255,255,0.92)",
+    border:         darkMode ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(249,115,22,0.1)",
+    borderRadius:   "20px",
+    padding:        "20px 24px",
+    boxShadow:      darkMode ? "0 4px 16px rgba(0,0,0,0.3)" : "0 4px 16px rgba(249,115,22,0.06)",
+  };
+
+  const inputStyle = {
+    width:        "100%",
+    padding:      "10px 16px",
+    borderRadius: "12px",
+    fontSize:     "14px",
+    fontWeight:   "500",
+    outline:      "none",
+    transition:   "all 0.2s ease",
+    background:   darkMode ? "#2a2a2a" : "rgba(255,247,240,0.8)",
+    border:       darkMode ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(249,115,22,0.15)",
+    color:        darkMode ? "#e0e0e0" : "#431407",
+  };
+
+  const labelStyle = {
+    fontSize:      "11px",
+    fontWeight:    "700",
+    textTransform: "uppercase",
+    letterSpacing: "0.07em",
+    marginBottom:  "6px",
+    display:       "block",
+    color:         darkMode ? "#808080" : "#c2855a",
+  };
+
   return (
-    <div className="glass rounded-3xl p-5 fade-up">
-      <div className="flex flex-col gap-3">
-        {/* Search row */}
-        <div className="flex gap-3 flex-wrap sm:flex-nowrap">
-          <div className="relative flex-1 min-w-[180px]">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-300 text-sm">🔍</span>
+    <div style={cardStyle}>
+
+      {/* ── Row 1: Search + Reset ── */}
+      <div style={{ display: "flex", gap: "12px", marginBottom: "16px", alignItems: "flex-end" }}>
+        <div style={{ flex: 1 }}>
+          <label style={labelStyle}>Search</label>
+          <div style={{ position: "relative" }}>
+            <span style={{
+              position:  "absolute",
+              left:      "14px",
+              top:       "50%",
+              transform: "translateY(-50%)",
+              fontSize:  "14px",
+              color:     darkMode ? "#606060" : "#d4956a",
+            }}>🔍</span>
             <input
               type="text"
-              placeholder="Search transactions..."
+              placeholder="Search by name or category..."
               value={filters.search}
               onChange={(e) => set("search", e.target.value)}
-              className="w-full rounded-2xl bg-white/60 border border-orange-200
-                         pl-10 pr-4 py-2.5 text-orange-900 placeholder-orange-300
-                         focus:outline-none focus:ring-2 focus:ring-orange-200
-                         focus:border-orange-400 transition-all duration-200 text-sm font-medium"
+              style={{ ...inputStyle, paddingLeft: "40px" }}
             />
           </div>
-          {hasActive && (
-            <button
-              onClick={() => dispatch({ type: ACTIONS.RESET_FILTERS })}
-              className="px-4 py-2.5 rounded-2xl bg-white/80 border border-orange-200
-                         text-orange-600 text-sm font-bold hover:bg-orange-50
-                         transition-all duration-200 whitespace-nowrap"
-            >
-              ✕ Reset
-            </button>
-          )}
         </div>
 
-        {/* Filter row */}
-        <div className="flex flex-wrap gap-3">
-          {[
-            { key: "category", label: "All Categories",
-              options: CATEGORIES.map((c) => ({ value: c, label: c })) },
-            { key: "type", label: "All Types",
-              options: [
-                { value: "income",  label: "💰 Income"  },
-                { value: "expense", label: "💸 Expense" },
-              ]},
-            { key: "sortBy", label: null,
-              options: [
-                { value: "date_desc",   label: "📅 Newest First"   },
-                { value: "date_asc",    label: "📅 Oldest First"   },
-                { value: "amount_desc", label: "💰 Highest Amount" },
-                { value: "amount_asc",  label: "💰 Lowest Amount"  },
-              ]},
-          ].map(({ key, label, options }) => (
-            <select
-              key={key}
-              value={filters[key]}
-              onChange={(e) => set(key, e.target.value)}
-              className="flex-1 min-w-[140px] rounded-2xl bg-white/60 border border-orange-200
-                         px-4 py-2.5 text-sm font-semibold text-orange-800
-                         focus:outline-none focus:ring-2 focus:ring-orange-200
-                         focus:border-orange-400 transition-all duration-200 cursor-pointer"
-            >
-              {label && <option value="All">{label}</option>}
-              {options.map((o) => (
-                <option key={o.value} value={o.value}>{o.label}</option>
-              ))}
-            </select>
-          ))}
+        {hasActive && (
+          <button
+            onClick={() => dispatch({ type: ACTIONS.RESET_FILTERS })}
+            style={{
+              padding:      "10px 18px",
+              borderRadius: "12px",
+              fontSize:     "13px",
+              fontWeight:   "700",
+              cursor:       "pointer",
+              transition:   "all 0.2s ease",
+              whiteSpace:   "nowrap",
+              background:   darkMode ? "#2a2a2a" : "rgba(255,247,240,0.8)",
+              border:       darkMode ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(249,115,22,0.2)",
+              color:        darkMode ? "#d0d0d0" : "#c2410c",
+              marginBottom: "0px",
+              alignSelf:    "flex-end",
+            }}
+          >
+            ✕ Reset
+          </button>
+        )}
+      </div>
+
+      {/* ── Row 2: Filters ── */}
+      <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+
+        {/* Category */}
+        <div style={{ flex: 1, minWidth: "160px" }}>
+          <label style={labelStyle}>Category</label>
+          <select
+            value={filters.category}
+            onChange={(e) => set("category", e.target.value)}
+            style={inputStyle}
+          >
+            <option value="All">All Categories</option>
+            {CATEGORIES.map((c) => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
         </div>
+
+        {/* Type */}
+        <div style={{ flex: 1, minWidth: "140px" }}>
+          <label style={labelStyle}>Type</label>
+          <select
+            value={filters.type}
+            onChange={(e) => set("type", e.target.value)}
+            style={inputStyle}
+          >
+            <option value="All">All Types</option>
+            <option value="income">💰 Income</option>
+            <option value="expense">💸 Expense</option>
+          </select>
+        </div>
+
+        {/* Sort */}
+        <div style={{ flex: 1, minWidth: "160px" }}>
+          <label style={labelStyle}>Sort By</label>
+          <select
+            value={filters.sortBy}
+            onChange={(e) => set("sortBy", e.target.value)}
+            style={inputStyle}
+          >
+            <option value="date_desc">Newest First</option>
+            <option value="date_asc">Oldest First</option>
+            <option value="amount_desc">Highest Amount</option>
+            <option value="amount_asc">Lowest Amount</option>
+          </select>
+        </div>
+
       </div>
     </div>
   );
