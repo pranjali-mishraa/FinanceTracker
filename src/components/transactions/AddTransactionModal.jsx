@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useAppDispatch, ACTIONS } from "../../context/AppContext";
+import { useAppDispatch, useAppState, ACTIONS } from "../../context/AppContext";
 import { CATEGORIES, CATEGORY_ICONS, generateId } from "../../data/mockData";
 
 const EMPTY = {
@@ -7,9 +7,10 @@ const EMPTY = {
   type: "expense", date: new Date().toISOString().split("T")[0],
 };
 
-export default function AddTransactionModal({ open, onClose, editData }) {
-  const dispatch = useAppDispatch();
-  const [form, setForm]     = useState(EMPTY);
+export default function AddTransactionModal({ open, onClose, editData,darkMode }) {
+  const dispatch        = useAppDispatch();
+  // const { darkMode }    = useAppState();
+  const [form, setForm] = useState(EMPTY);
   const [errors, setErrors] = useState({});
   const isEditing = Boolean(editData);
 
@@ -39,98 +40,179 @@ export default function AddTransactionModal({ open, onClose, editData }) {
     if (Object.keys(e).length) { setErrors(e); return; }
     dispatch({
       type:    isEditing ? ACTIONS.EDIT_TRANSACTION : ACTIONS.ADD_TRANSACTION,
-      payload: { ...form, id: isEditing ? form.id : generateId(), amount: Number(form.amount) },
+      payload: {
+        ...form,
+        id:     isEditing ? form.id : generateId(),
+        amount: Number(form.amount),
+      },
     });
     onClose();
   };
 
+  // ── Dynamic styles based on darkMode ─────────────────────
+  const modalBg   = darkMode ? "#1e1e1e"                    : "rgba(255,255,255,0.97)";
+  const inputBg   = darkMode ? "#2a2a2a"                    : "rgba(255,247,240,0.8)";
+  const inputBorder = darkMode ? "rgba(255,255,255,0.1)"    : "rgba(249,115,22,0.2)";
+  const inputColor  = darkMode ? "#f0f0f0"                  : "#431407";
+  const labelColor  = darkMode ? "#a08878"                  : "#c2855a";
+  const bodyBorder  = darkMode ? "rgba(255,255,255,0.08)"   : "rgba(249,115,22,0.12)";
+
+  const inputStyle = {
+    width:        "100%",
+    padding:      "10px 14px",
+    borderRadius: "12px",
+    border:       `1px solid ${inputBorder}`,
+    background:   inputBg,
+    fontSize:     "14px",
+    fontWeight:   "500",
+    color:        inputColor,
+    outline:      "none",
+    transition:   "all 0.2s ease",
+  };
+
+  const labelStyle = {
+    fontSize:      "11px",
+    fontWeight:    "700",
+    color:         labelColor,
+    textTransform: "uppercase",
+    letterSpacing: "0.07em",
+    marginBottom:  "6px",
+    display:       "block",
+  };
+
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: "rgba(124,45,18,0.2)", backdropFilter: "blur(6px)" }}
-      onClick={(e) => e.target === e.currentTarget && onClose()}
+      onClick={onClose}
+      style={{
+        position:       "fixed",
+        inset:          0,
+        zIndex:         50,
+        display:        "flex",
+        alignItems:     "center",
+        justifyContent: "center",
+        padding:        "16px",
+        background:     darkMode ? "rgba(0,0,0,0.6)" : "rgba(67,20,7,0.15)",
+        backdropFilter: "blur(6px)",
+      }}
     >
-      <div className="w-full max-w-md rounded-3xl overflow-hidden fade-up"
-        style={{ boxShadow: "0 24px 64px rgba(124,45,18,0.25)" }}>
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width:        "100%",
+          maxWidth:     "440px",
+          borderRadius: "28px",
+          overflow:     "hidden",
+          background:   modalBg,
+          boxShadow:    darkMode
+            ? "0 24px 60px rgba(0,0,0,0.5)"
+            : "0 24px 60px rgba(249,115,22,0.15), 0 4px 16px rgba(0,0,0,0.06)",
+          border: `1px solid ${bodyBorder}`,
+        }}
+      >
 
-        {/* Modal header */}
-        <div className="px-7 py-6 relative overflow-hidden"
-          style={{ background: "linear-gradient(135deg,#ea580c,#f97316,#ec4899)" }}>
-          <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full opacity-20"
-            style={{ background: "radial-gradient(circle,white,transparent 70%)" }} />
-          <div className="relative z-10 flex items-center justify-between">
-            <div>
-              <h2 className="font-display text-xl font-bold text-white">
-                {isEditing ? "✏️ Edit Transaction" : "➕ New Transaction"}
-              </h2>
-              <p className="text-white/65 text-xs mt-0.5">
-                {isEditing ? "Update transaction details" : "Fill in the details below"}
-              </p>
-            </div>
-            <button onClick={onClose}
-              className="w-9 h-9 rounded-2xl bg-white/20 hover:bg-white/35
-                         flex items-center justify-center text-white font-bold
-                         transition-all duration-200 hover:scale-110">
-              ✕
-            </button>
-          </div>
+        {/* ── Header — keep gradient always, looks good on both ── */}
+        <div style={{
+          background: "linear-gradient(135deg, #fb923c 0%, #f97316 50%, #ec4899 100%)",
+          padding:    "24px 28px 20px",
+        }}>
+          <h2 style={{
+            fontSize:   "20px",
+            fontWeight: "800",
+            color:      "#fff",
+            margin:     0,
+            fontFamily: "'Playfair Display', serif",
+          }}>
+            {isEditing ? "Edit Transaction" : "New Transaction"}
+          </h2>
+          <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", marginTop: "4px" }}>
+            {isEditing ? "Update the details below" : "Fill in the details below"}
+          </p>
         </div>
 
-        {/* Modal body */}
-        <div className="bg-white/95 backdrop-blur-xl px-7 py-6 flex flex-col gap-4">
+        {/* ── Body ── */}
+        <div style={{
+          padding:         "24px 28px",
+          display:         "flex",
+          flexDirection:   "column",
+          gap:             "18px",
+          background:      modalBg,
+        }}>
 
           {/* Description */}
           <div>
-            <label className="block text-xs font-bold text-orange-600 uppercase tracking-wider mb-2">
-              Description
-            </label>
-            <input type="text" placeholder="e.g. Grocery shopping"
+            <label style={labelStyle}>Description</label>
+            <input
+              type="text"
+              placeholder="e.g. Grocery shopping"
               value={form.description}
               onChange={(e) => set("description", e.target.value)}
-              className="w-full rounded-2xl bg-orange-50/80 border border-orange-200
-                         px-4 py-2.5 text-orange-950 placeholder-orange-300 text-sm font-medium
-                         focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-orange-400
-                         transition-all duration-200"
+              style={inputStyle}
             />
-            {errors.description && <p className="text-rose-500 text-xs mt-1 font-medium">{errors.description}</p>}
+            {errors.description && (
+              <p style={{ color: "#e11d48", fontSize: "12px", marginTop: "4px" }}>
+                {errors.description}
+              </p>
+            )}
           </div>
 
           {/* Amount */}
           <div>
-            <label className="block text-xs font-bold text-orange-600 uppercase tracking-wider mb-2">
-              Amount (₹)
-            </label>
-            <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-orange-400 text-sm">₹</span>
-              <input type="number" placeholder="0" min="1"
+            <label style={labelStyle}>Amount (₹)</label>
+            <div style={{ position: "relative" }}>
+              <span style={{
+                position:  "absolute",
+                left:      "14px",
+                top:       "50%",
+                transform: "translateY(-50%)",
+                fontWeight:"700",
+                color:     "#fb923c",
+                fontSize:  "15px",
+              }}>₹</span>
+              <input
+                type="number"
+                placeholder="0"
+                min="1"
                 value={form.amount}
                 onChange={(e) => set("amount", e.target.value)}
-                className="w-full rounded-2xl bg-orange-50/80 border border-orange-200
-                           pl-8 pr-4 py-2.5 text-orange-950 text-sm font-bold
-                           focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-orange-400
-                           transition-all duration-200"
+                style={{ ...inputStyle, paddingLeft: "32px" }}
               />
             </div>
-            {errors.amount && <p className="text-rose-500 text-xs mt-1 font-medium">{errors.amount}</p>}
+            {errors.amount && (
+              <p style={{ color: "#e11d48", fontSize: "12px", marginTop: "4px" }}>
+                {errors.amount}
+              </p>
+            )}
           </div>
 
           {/* Type toggle */}
           <div>
-            <label className="block text-xs font-bold text-orange-600 uppercase tracking-wider mb-2">
-              Type
-            </label>
-            <div className="flex gap-2">
+            <label style={labelStyle}>Type</label>
+            <div style={{ display: "flex", gap: "10px" }}>
               {["income", "expense"].map((t) => (
-                <button key={t} onClick={() => set("type", t)}
-                  className={`
-                    flex-1 py-2.5 rounded-2xl text-sm font-bold border-2
-                    transition-all duration-200 capitalize
-                    ${form.type === t
+                <button
+                  key={t}
+                  onClick={() => set("type", t)}
+                  style={{
+                    flex:         1,
+                    padding:      "10px",
+                    borderRadius: "12px",
+                    fontSize:     "13px",
+                    fontWeight:   "700",
+                    cursor:       "pointer",
+                    transition:   "all 0.2s ease",
+                    border: form.type === t
+                      ? t === "income" ? "2px solid #10b981" : "2px solid #f43f5e"
+                      : `2px solid ${inputBorder}`,
+                    background: form.type === t
                       ? t === "income"
-                        ? "bg-emerald-100 border-emerald-400 text-emerald-700 scale-[1.02]"
-                        : "bg-rose-100 border-rose-400 text-rose-600 scale-[1.02]"
-                      : "bg-orange-50 border-orange-200 text-orange-400 hover:bg-orange-100"}
-                  `}>
+                        ? darkMode ? "rgba(16,185,129,0.15)" : "#f0fdf4"
+                        : darkMode ? "rgba(244,63,94,0.15)"  : "#fff1f2"
+                      : inputBg,
+                    color: form.type === t
+                      ? t === "income" ? "#10b981" : "#f43f5e"
+                      : labelColor,
+                  }}
+                >
                   {t === "income" ? "💰 Income" : "💸 Expense"}
                 </button>
               ))}
@@ -139,14 +221,12 @@ export default function AddTransactionModal({ open, onClose, editData }) {
 
           {/* Category */}
           <div>
-            <label className="block text-xs font-bold text-orange-600 uppercase tracking-wider mb-2">
-              Category
-            </label>
-            <select value={form.category} onChange={(e) => set("category", e.target.value)}
-              className="w-full rounded-2xl bg-orange-50/80 border border-orange-200
-                         px-4 py-2.5 text-orange-900 text-sm font-semibold
-                         focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-orange-400
-                         transition-all duration-200 cursor-pointer">
+            <label style={labelStyle}>Category</label>
+            <select
+              value={form.category}
+              onChange={(e) => set("category", e.target.value)}
+              style={inputStyle}
+            >
               {CATEGORIES.map((c) => (
                 <option key={c} value={c}>{CATEGORY_ICONS[c]} {c}</option>
               ))}
@@ -155,31 +235,61 @@ export default function AddTransactionModal({ open, onClose, editData }) {
 
           {/* Date */}
           <div>
-            <label className="block text-xs font-bold text-orange-600 uppercase tracking-wider mb-2">
-              Date
-            </label>
-            <input type="date" value={form.date}
+            <label style={labelStyle}>Date</label>
+            <input
+              type="date"
+              value={form.date}
               onChange={(e) => set("date", e.target.value)}
-              className="w-full rounded-2xl bg-orange-50/80 border border-orange-200
-                         px-4 py-2.5 text-orange-900 text-sm font-medium
-                         focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-orange-400
-                         transition-all duration-200"
+              style={inputStyle}
             />
-            {errors.date && <p className="text-rose-500 text-xs mt-1 font-medium">{errors.date}</p>}
+            {errors.date && (
+              <p style={{ color: "#e11d48", fontSize: "12px", marginTop: "4px" }}>
+                {errors.date}
+              </p>
+            )}
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="bg-white/95 px-7 pb-7 flex gap-3">
-          <button onClick={onClose}
-            className="flex-1 py-3 rounded-2xl bg-orange-50 border border-orange-200
-                       text-orange-700 text-sm font-bold hover:bg-orange-100
-                       transition-all duration-200">
+        {/* ── Footer ── */}
+        <div style={{
+          padding:    "0 28px 24px",
+          display:    "flex",
+          gap:        "12px",
+          background: modalBg,
+        }}>
+          <button
+            onClick={onClose}
+            style={{
+              flex:         1,
+              padding:      "12px",
+              borderRadius: "14px",
+              border:       `1px solid ${inputBorder}`,
+              background:   inputBg,
+              color:        labelColor,
+              fontSize:     "14px",
+              fontWeight:   "700",
+              cursor:       "pointer",
+              transition:   "all 0.2s ease",
+            }}
+          >
             Cancel
           </button>
-          <button onClick={handleSubmit}
-            className="flex-1 py-3 rounded-2xl btn-glow text-white text-sm font-bold
-                       tracking-wide transition-all duration-200">
+          <button
+            onClick={handleSubmit}
+            style={{
+              flex:         1,
+              padding:      "12px",
+              borderRadius: "14px",
+              border:       "none",
+              background:   "linear-gradient(135deg, #f97316, #ec4899)",
+              color:        "#fff",
+              fontSize:     "14px",
+              fontWeight:   "700",
+              cursor:       "pointer",
+              boxShadow:    "0 4px 16px rgba(249,115,22,0.35)",
+              transition:   "all 0.2s ease",
+            }}
+          >
             {isEditing ? "💾 Save Changes" : "➕ Add Transaction"}
           </button>
         </div>

@@ -1,7 +1,7 @@
 export default function StatCard({ label, value, icon, iconBg, badge, badgeUp }) {
     return (
-      <div
-        className="cursor-default"
+      <div 
+        className="cursor-default insight-card"
         style={{
           background:     "rgba(255,255,255,0.9)",
           backdropFilter: "blur(16px)",
@@ -38,24 +38,17 @@ export default function StatCard({ label, value, icon, iconBg, badge, badgeUp })
             {icon}
           </div>
   
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             <span style={{
               fontSize: "13px", fontWeight: "600",
               color: "#9a7060", letterSpacing: "0.01em",
             }}>
               {label}
             </span>
-            <span style={{
-              display: "inline-flex", alignItems: "center",
-              padding: "3px 10px", borderRadius: "99px",
-              fontSize: "11px", fontWeight: "700",
-              background: badgeUp ? "#f0fdf4" : "#fff1f2",
-              color:      badgeUp ? "#16a34a" : "#e11d48",
-              border:     badgeUp ? "1px solid #bbf7d0" : "1px solid #fecdd3",
-            }}>
-              {badge}
-            </span>
+           
+
           </div>
+
         </div>
   
         {/* Bottom — value */}

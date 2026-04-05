@@ -8,6 +8,9 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip,
 } from "recharts";
 
+
+
+
 const fmt = (v) =>
   new Intl.NumberFormat("en-IN", {
     style: "currency", currency: "INR", maximumFractionDigits: 0,
@@ -67,14 +70,13 @@ const getLongestStreak = (transactions) => {
   return max;
 };
 
-// ── Comparison sub-card (reused for income + expense) ─────────
-const ComparisonCard = ({ label, diff, prev, last, prevLabel, lastLabel, positiveIsGood }) => {
+const ComparisonCard = ({ label, diff, prev, last, prevLabel, lastLabel, positiveIsGood, darkMode }) => {
   const isGood = positiveIsGood ? diff >= 0 : diff <= 0;
   return (
     <div style={{
-      background:    "rgba(255,255,255,0.92)",
-      border:        "1px solid rgba(249,115,22,0.1)",
-      boxShadow:     "0 4px 20px rgba(249,115,22,0.07)",
+      background:    darkMode ? "#252525" : "rgba(255,255,255,0.92)",
+      border:        darkMode ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(249,115,22,0.1)",
+      boxShadow:     darkMode ? "0 4px 16px rgba(0,0,0,0.3)" : "0 4px 20px rgba(249,115,22,0.07)",
       borderRadius:  "20px",
       padding:       "24px",
       display:       "flex",
@@ -83,41 +85,38 @@ const ComparisonCard = ({ label, diff, prev, last, prevLabel, lastLabel, positiv
       minHeight:     "180px",
     }}>
       <span style={{
-        fontSize: "11px", fontWeight: "700", color: "#c2855a",
+        fontSize: "11px", fontWeight: "700",
+        color: darkMode ? "#a08070" : "#c2855a",
         textTransform: "uppercase", letterSpacing: "0.08em",
       }}>
         {label}
       </span>
 
-      <div style={{ height: "1px", background: "rgba(249,115,22,0.08)" }} />
+      <div style={{ height: "1px", background: darkMode ? "rgba(255,255,255,0.08)" : "rgba(249,115,22,0.08)" }} />
 
-      {/* Big number */}
       <div className="flex items-end gap-2">
-        <span style={{ fontSize: "34px", fontWeight: "800", color: "#1a0a00", lineHeight: 1 }}>
+        <span style={{ fontSize: "34px", fontWeight: "800", lineHeight: 1,
+                       color: darkMode ? "#f0f0f0" : "#1a0a00" }}>
           {diff >= 0 ? "+" : ""}{fmt(diff)}
         </span>
-        <span style={{
-          fontSize: "22px", fontWeight: "700", marginBottom: "2px",
-          color: isGood ? "#16a34a" : "#e11d48",
-        }}>
+        <span style={{ fontSize: "22px", fontWeight: "700", marginBottom: "2px",
+                       color: isGood ? "#16a34a" : "#e11d48" }}>
           {isGood ? "↑" : "↓"}
         </span>
       </div>
 
-      {/* From → To */}
       <div style={{
-        padding:      "10px 14px",
-        borderRadius: "12px",
-        background:   isGood ? "#f0fdf4" : "#fff1f2",
-        display:      "flex",
-        flexDirection:"column",
-        gap:          "4px",
+        padding: "10px 14px", borderRadius: "12px",
+        background: isGood
+          ? darkMode ? "rgba(16,185,129,0.12)"  : "#f0fdf4"
+          : darkMode ? "rgba(244,63,94,0.12)"   : "#fff1f2",
+        display: "flex", flexDirection: "column", gap: "4px",
       }}>
-        <p style={{ fontSize: "12px", color: "#9a7060" }}>
-          {prevLabel}: <strong>{fmt(prev)}</strong>
+        <p style={{ fontSize: "12px", color: darkMode ? "#909090" : "#9a7060" }}>
+          {prevLabel}: <strong style={{ color: darkMode ? "#d0d0d0" : "#431407" }}>{fmt(prev)}</strong>
         </p>
-        <p style={{ fontSize: "12px", color: "#9a7060" }}>
-          {lastLabel}: <strong>{fmt(last)}</strong>
+        <p style={{ fontSize: "12px", color: darkMode ? "#909090" : "#9a7060" }}>
+          {lastLabel}: <strong style={{ color: darkMode ? "#d0d0d0" : "#431407" }}>{fmt(last)}</strong>
         </p>
       </div>
     </div>
@@ -127,8 +126,10 @@ const ComparisonCard = ({ label, diff, prev, last, prevLabel, lastLabel, positiv
 export default function InsightsPanel() {
   const {
     transactions, monthlyData, categoryData,
-    totalExpenses, totalIncome, topCategory,
+    totalExpenses, totalIncome, topCategory, darkMode
   } = useAppState();
+
+  
 
   const comparison = useMemo(() => getMonthlyComparison(monthlyData), [monthlyData]);
   const avgExpense  = useMemo(() => getAvgMonthlyExpense(monthlyData), [monthlyData]);
@@ -207,35 +208,38 @@ export default function InsightsPanel() {
           </h3>
 
           <div className="grid grid-cols-2 gap-6">
-            <ComparisonCard
-              label="Income Change"
-              diff={comparison.incDiff}
-              prev={comparison.prev.income}
-              last={comparison.last.income}
-              prevLabel={comparison.prev.month}
-              lastLabel={comparison.last.month}
-              positiveIsGood={true}
-            />
-            <ComparisonCard
-              label="Expense Change"
-              diff={comparison.expDiff}
-              prev={comparison.prev.expense}
-              last={comparison.last.expense}
-              prevLabel={comparison.prev.month}
-              lastLabel={comparison.last.month}
-              positiveIsGood={false}
-            />
+        
+<ComparisonCard
+  label="Income Change"
+  diff={comparison.incDiff}
+  prev={comparison.prev.income}
+  last={comparison.last.income}
+  prevLabel={comparison.prev.month}
+  lastLabel={comparison.last.month}
+  positiveIsGood={true}
+  darkMode={darkMode}
+/>
+<ComparisonCard
+  label="Expense Change"
+  diff={comparison.expDiff}
+  prev={comparison.prev.expense}
+  last={comparison.last.expense}
+  prevLabel={comparison.prev.month}
+  lastLabel={comparison.last.month}
+  positiveIsGood={false}
+  darkMode={darkMode}
+/>
           </div>
 
           {/* Smart observation */}
           <div style={{
-            background:   "#fff7ed",
-            border:       "1px solid rgba(249,115,22,0.15)",
-            borderRadius: "16px",
-            padding:      "14px 18px",
-            fontSize:     "13px",
-            color:        "#92400e",
-            fontWeight:   "500",
+  background:   darkMode ? "#2a2a2a"                    : "#fff7ed",
+  border:       darkMode ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(249,115,22,0.15)",
+  borderRadius: "16px",
+  padding:      "14px 18px",
+  fontSize:     "13px",
+  color:        darkMode ? "#d0d0d0" : "#92400e",
+  fontWeight:   "500",
           }}>
             💡 {comparison.expDiff > 0
               ? `You spent ${fmt(comparison.expDiff)} more in ${comparison.last.month} vs ${comparison.prev.month}. Consider reviewing your ${topCategory?.category} spending.`

@@ -29,19 +29,20 @@ const applyFilters = (transactions, filters) => {
 const PAGE_SIZES = [10, 20, 50];
 
 export default function TransactionTable() {
-  const { transactions, filters, role } = useAppState();
+  // ✅ ALL hooks inside the component
+  const { transactions, filters, role, darkMode } = useAppState();
   const dispatch = useAppDispatch();
   const [modalOpen, setModalOpen] = useState(false);
   const [editData,  setEditData]  = useState(null);
-  const [page,     setPage]     = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [page,      setPage]      = useState(1);
+  const [pageSize,  setPageSize]  = useState(10);
 
   const filtered   = useMemo(() => applyFilters(transactions, filters), [transactions, filters]);
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const paginated  = filtered.slice((page - 1) * pageSize, page * pageSize);
   useMemo(() => setPage(1), [filters]);
 
-  const openEdit = (txn) => { setEditData(txn); setModalOpen(true); };
+  const openEdit    = (txn) => { setEditData(txn); setModalOpen(true); };
   const handleDelete = (id) => {
     if (window.confirm("Delete this transaction?"))
       dispatch({ type: ACTIONS.DELETE_TRANSACTION, payload: id });
@@ -62,14 +63,16 @@ export default function TransactionTable() {
             </p>
           </div>
           {role === "admin" && (
-            <button onClick={() => { setEditData(null); setModalOpen(true); }}
-              className="btn-glow text-white font-bold px-5 py-2.5 rounded-2xl text-sm tracking-wide">
+            <button
+              onClick={() => { setEditData(null); setModalOpen(true); }}
+              className="btn-glow text-white font-bold px-5 py-2.5 rounded-2xl text-sm tracking-wide"
+            >
               ➕ Add Transaction
             </button>
           )}
         </div>
 
-        {/* Desktop table */}
+        {/* ── Desktop table ── */}
         <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -102,17 +105,14 @@ export default function TransactionTable() {
                   className="group border-b border-orange-50/80 last:border-0
                              hover:bg-orange-50/60 transition-colors duration-150"
                   style={{ animationDelay: `${i * 30}ms` }}>
-
                   <td className="px-4 py-3.5 text-orange-400 text-xs font-semibold whitespace-nowrap">
                     {new Date(txn.date).toLocaleDateString("en-IN", {
                       day: "2-digit", month: "short", year: "numeric",
                     })}
                   </td>
-
                   <td className="px-4 py-3.5 font-semibold text-orange-950">
                     {txn.description}
                   </td>
-
                   <td className="px-4 py-3.5">
                     <span className="px-3 py-1 rounded-full text-xs font-bold
                                      bg-gradient-to-r from-orange-100 to-pink-100
@@ -120,7 +120,6 @@ export default function TransactionTable() {
                       {CATEGORY_ICONS[txn.category]} {txn.category}
                     </span>
                   </td>
-
                   <td className="px-4 py-3.5">
                     <span className={`px-3 py-1 rounded-full text-xs font-bold
                       ${txn.type === "income"
@@ -129,15 +128,14 @@ export default function TransactionTable() {
                       {txn.type === "income" ? "💰 Income" : "💸 Expense"}
                     </span>
                   </td>
-
                   <td className={`px-4 py-3.5 font-bold text-right whitespace-nowrap
                     ${txn.type === "income" ? "text-emerald-600" : "text-rose-500"}`}>
                     {txn.type === "income" ? "+" : "−"}{fmt(txn.amount)}
                   </td>
-
                   {role === "admin" && (
                     <td className="px-4 py-3.5 text-right">
-                      <div className="flex gap-1.5 justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <div className="flex gap-1.5 justify-end opacity-0 group-hover:opacity-100
+                                      transition-opacity duration-200">
                         <button onClick={() => openEdit(txn)}
                           className="p-2 rounded-xl hover:bg-orange-100 text-orange-500
                                      transition-all duration-200 hover:scale-110"
@@ -155,133 +153,111 @@ export default function TransactionTable() {
           </table>
         </div>
 
-        {/* Mobile cards */}
-       {/* Mobile cards */}
-<div className="md:hidden flex flex-col gap-3">
-  {paginated.length === 0 ? (
-    <div className="text-center py-16 text-orange-300 text-sm font-medium">
-      <div className="flex flex-col items-center gap-2">
-        <span className="text-4xl">😕</span>
-        No transactions match your filters
-      </div>
-    </div>
-  ) : (
-    paginated.map((txn) => (
-      <div
-        key={txn.id}
-        style={{
-          background:     "rgba(255,255,255,0.92)",
-          backdropFilter: "blur(16px)",
-          border:         "1px solid rgba(249,115,22,0.08)",
-          borderRadius:   "20px",
-          padding:        "18px 20px",
-          boxShadow:      "0 4px 16px rgba(249,115,22,0.06), 0 1px 3px rgba(0,0,0,0.03)",
-          margin:         "0 4px",
-          transition:     "all 0.2s ease",
-        }}
-      >
-        {/* Top row — description + amount */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
-          <div>
-            <p style={{ fontSize: "15px", fontWeight: "700", color: "#1a0a00", marginBottom: "3px" }}>
-              {txn.description}
-            </p>
-            <p style={{ fontSize: "12px", color: "#c2855a", fontWeight: "500" }}>
-              {new Date(txn.date).toLocaleDateString("en-IN", {
-                day: "2-digit", month: "short", year: "numeric",
-              })}
-            </p>
-          </div>
-          <span style={{
-            fontSize:   "16px",
-            fontWeight: "800",
-            color:      txn.type === "income" ? "#16a34a" : "#e11d48",
-            marginLeft: "12px",
-            flexShrink: 0,
-          }}>
-            {txn.type === "income" ? "+" : "−"}{fmt(txn.amount)}
-          </span>
-        </div>
-
-        {/* Divider */}
-        <div style={{ height: "1px", background: "rgba(249,115,22,0.08)", marginBottom: "12px" }} />
-
-        {/* Bottom row — category + type + actions */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-            {/* Category badge */}
-            <span style={{
-              padding:      "4px 12px",
-              borderRadius: "99px",
-              fontSize:     "11px",
-              fontWeight:   "700",
-              background:   "linear-gradient(135deg,#fff3e0,#fce7f3)",
-              color:        "#c2410c",
-              border:       "1px solid rgba(249,115,22,0.15)",
-            }}>
-              {CATEGORY_ICONS[txn.category]} {txn.category}
-            </span>
-
-            {/* Type badge */}
-            <span style={{
-              padding:      "4px 12px",
-              borderRadius: "99px",
-              fontSize:     "11px",
-              fontWeight:   "700",
-              background:   txn.type === "income" ? "#f0fdf4" : "#fff1f2",
-              color:        txn.type === "income" ? "#16a34a" : "#e11d48",
-              border:       txn.type === "income"
-                ? "1px solid #bbf7d0"
-                : "1px solid #fecdd3",
-            }}>
-              {txn.type === "income" ? "💰 Income" : "💸 Expense"}
-            </span>
-          </div>
-
-          {/* Admin actions */}
-          {role === "admin" && (
-            <div style={{ display: "flex", gap: "6px", marginLeft: "8px" }}>
-              <button
-                onClick={() => openEdit(txn)}
-                style={{
-                  width:        "34px",
-                  height:       "34px",
-                  borderRadius: "10px",
-                  background:   "#fff3e0",
-                  border:       "1px solid rgba(249,115,22,0.15)",
-                  display:      "flex",
-                  alignItems:   "center",
-                  justifyContent: "center",
-                  fontSize:     "14px",
-                  cursor:       "pointer",
-                  transition:   "all 0.2s ease",
-                }}
-              >✏️</button>
-              <button
-                onClick={() => handleDelete(txn.id)}
-                style={{
-                  width:        "34px",
-                  height:       "34px",
-                  borderRadius: "10px",
-                  background:   "#fff1f2",
-                  border:       "1px solid rgba(254,205,211,0.6)",
-                  display:      "flex",
-                  alignItems:   "center",
-                  justifyContent: "center",
-                  fontSize:     "14px",
-                  cursor:       "pointer",
-                  transition:   "all 0.2s ease",
-                }}
-              >🗑️</button>
+        {/* ── Mobile cards ── */}
+        <div className="md:hidden flex flex-col gap-3">
+          {paginated.length === 0 ? (
+            <div className="text-center py-16 text-orange-300 text-sm font-medium">
+              <div className="flex flex-col items-center gap-2">
+                <span className="text-4xl">😕</span>
+                No transactions match your filters
+              </div>
             </div>
-          )}
-        </div>
-      </div>
-    ))
-  )}
-</div>
+          ) : paginated.map((txn) => (
+            <div
+              key={txn.id}
+              style={{
+                background:     darkMode ? "#252525" : "rgba(255,255,255,0.92)",
+                backdropFilter: "blur(16px)",
+                border:         darkMode
+                  ? "1px solid rgba(255,255,255,0.08)"
+                  : "1px solid rgba(249,115,22,0.08)",
+                borderRadius:   "20px",
+                padding:        "18px 20px",
+                boxShadow:      darkMode
+                  ? "0 4px 16px rgba(0,0,0,0.3)"
+                  : "0 4px 16px rgba(249,115,22,0.06)",
+                margin:         "0 4px",
+                transition:     "all 0.2s ease",
+              }}
+            >
+              {/* Top row */}
+              <div style={{ display: "flex", justifyContent: "space-between",
+                            alignItems: "flex-start", marginBottom: "12px" }}>
+                <div>
+                  <p style={{ fontSize: "15px", fontWeight: "700",
+                              color: darkMode ? "#f0f0f0" : "#1a0a00", marginBottom: "3px" }}>
+                    {txn.description}
+                  </p>
+                  <p style={{ fontSize: "12px", fontWeight: "500",
+                              color: darkMode ? "#808080" : "#c2855a" }}>
+                    {new Date(txn.date).toLocaleDateString("en-IN", {
+                      day: "2-digit", month: "short", year: "numeric",
+                    })}
+                  </p>
+                </div>
+                <span style={{
+                  fontSize: "16px", fontWeight: "800", marginLeft: "12px", flexShrink: 0,
+                  color: txn.type === "income" ? "#16a34a" : "#e11d48",
+                }}>
+                  {txn.type === "income" ? "+" : "−"}{fmt(txn.amount)}
+                </span>
+              </div>
 
-        {/* Pagination */}
+              {/* Divider */}
+              <div style={{
+                height: "1px", marginBottom: "12px",
+                background: darkMode ? "rgba(255,255,255,0.08)" : "rgba(249,115,22,0.08)",
+              }} />
+
+              {/* Bottom row */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                  <span style={{
+                    padding: "4px 12px", borderRadius: "99px",
+                    fontSize: "11px", fontWeight: "700",
+                    background: darkMode ? "rgba(249,115,22,0.12)" : "linear-gradient(135deg,#fff3e0,#fce7f3)",
+                    color:  darkMode ? "#d4956a" : "#c2410c",
+                    border: darkMode ? "1px solid rgba(249,115,22,0.2)" : "1px solid rgba(249,115,22,0.15)",
+                  }}>
+                    {CATEGORY_ICONS[txn.category]} {txn.category}
+                  </span>
+                  <span style={{
+                    padding: "4px 12px", borderRadius: "99px",
+                    fontSize: "11px", fontWeight: "700",
+                    background: txn.type === "income"
+                      ? darkMode ? "rgba(16,185,129,0.12)" : "#f0fdf4"
+                      : darkMode ? "rgba(244,63,94,0.12)"  : "#fff1f2",
+                    color:  txn.type === "income" ? "#34d399" : "#fb7185",
+                    border: txn.type === "income"
+                      ? "1px solid rgba(16,185,129,0.25)"
+                      : "1px solid rgba(244,63,94,0.25)",
+                  }}>
+                    {txn.type === "income" ? "💰 Income" : "💸 Expense"}
+                  </span>
+                </div>
+
+                {role === "admin" && (
+                  <div style={{ display: "flex", gap: "6px", marginLeft: "8px" }}>
+                    <button onClick={() => openEdit(txn)} style={{
+                      width: "34px", height: "34px", borderRadius: "10px", cursor: "pointer",
+                      background: darkMode ? "rgba(249,115,22,0.12)" : "#fff3e0",
+                      border: darkMode ? "1px solid rgba(249,115,22,0.2)" : "1px solid rgba(249,115,22,0.15)",
+                      display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px",
+                    }}>✏️</button>
+                    <button onClick={() => handleDelete(txn.id)} style={{
+                      width: "34px", height: "34px", borderRadius: "10px", cursor: "pointer",
+                      background: darkMode ? "rgba(244,63,94,0.12)" : "#fff1f2",
+                      border: darkMode ? "1px solid rgba(244,63,94,0.2)" : "1px solid rgba(254,205,211,0.6)",
+                      display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px",
+                    }}>🗑️</button>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* ── Pagination ── */}
         {filtered.length > 0 && (
           <div className="flex flex-wrap items-center justify-between gap-3 mt-6
                           pt-5 border-t border-orange-100/80">
@@ -316,10 +292,12 @@ export default function TransactionTable() {
         )}
       </div>
 
+      {/* ✅ darkMode passed as prop to modal */}
       <AddTransactionModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         editData={editData}
+        darkMode={darkMode}
       />
     </>
   );

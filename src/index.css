@@ -82,6 +82,165 @@ body {
 /* ── Display font ───────────────────────────────────────────── */
 .font-display { font-family: 'Playfair Display', serif; }
 
+
+html, body, #root {
+  margin:  0;
+  padding: 0;
+  border:  none;
+  outline: none;
+  width:   100%;
+  overflow-x: hidden;
+}
+
+/* Remove white border around app */
+.dark #root,
+.dark body {
+  background: #111111;
+  border: none;
+  outline: none;
+}
+
+/* ── DARK MODE — clean, no gradients ───────────────────────── */
+
+/* Page background */
+.dark .mesh-bg {
+  background-color:  #111111 !important;
+  background-image:  none !important;
+}
+
+/* Header */
+.dark header {
+  background:   rgba(18,18,18,0.95) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  box-shadow:   none !important;
+}
+
+/* Sidebar — remove gradient, flat dark */
+.dark aside {
+  background:   #1a1a1a !important;
+  box-shadow:   none !important;
+}
+
+.dark aside * { color: #e0e0e0 !important; }
+.dark aside a.active,
+.dark aside a[aria-current] {
+  background: rgba(255,255,255,0.1) !important;
+}
+
+/* Glass cards */
+.dark .glass {
+  background:   #1e1e1e !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  box-shadow:   0 4px 24px rgba(0,0,0,0.4) !important;
+}
+
+/* All white/pastel cards — StatCard, InsightCard, ComparisonCard */
+.dark .insight-card,
+.dark [style*="rgba(255,255,255,0.92)"],
+.dark [style*="rgba(255,255,255,0.9)"],
+.dark [style*="rgba(255,255,255,0.85)"] {
+  background:   #252525 !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  box-shadow:   0 4px 16px rgba(0,0,0,0.3) !important;
+}
+
+/* Gradient text — remove gradient in dark, just white */
+.dark .grad-text {
+  background:              none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: #f5f5f5 !important;
+  background-clip:         unset !important;
+  color:                   #f5f5f5 !important;
+}
+
+/* Headings */
+.dark h1,
+.dark h2,
+.dark h3 { color: #f0f0f0 !important; }
+
+/* Body text */
+.dark p  { color: #b0b0b0 !important; }
+
+/* Orange text — make lighter for contrast */
+.dark .text-orange-950,
+.dark .text-orange-900 { color: #f0f0f0 !important; }
+.dark .text-orange-800 { color: #e0d0c8 !important; }
+.dark .text-orange-700 { color: #d4b8a8 !important; }
+.dark .text-orange-600 { color: #c9a898 !important; }
+.dark .text-orange-500,
+.dark .text-orange-400 { color: #a08070 !important; }
+
+/* Inputs and selects */
+.dark input,
+.dark select,
+.dark textarea {
+  background:   #2a2a2a !important;
+  border-color: rgba(255,255,255,0.1) !important;
+  color:        #f0f0f0 !important;
+}
+.dark input::placeholder { color: #606060 !important; }
+
+/* Table */
+.dark table th {
+  color:        #909090 !important;
+  border-color: rgba(255,255,255,0.06) !important;
+}
+.dark table td {
+  color:        #d0d0d0 !important;
+  border-color: rgba(255,255,255,0.06) !important;
+}
+.dark table tr:hover { background: rgba(255,255,255,0.03) !important; }
+.dark tfoot tr       { background: rgba(255,255,255,0.05) !important; }
+
+/* Badges */
+.dark .bg-emerald-100  { background: rgba(16,185,129,0.15)  !important; }
+.dark .bg-rose-100     { background: rgba(244,63,94,0.15)   !important; }
+.dark .text-emerald-700 { color: #6ee7b7 !important; }
+.dark .text-rose-600   { color: #fda4af !important; }
+
+/* Recharts */
+.dark .recharts-cartesian-axis-tick text,
+.dark .recharts-text { fill: #909090 !important; }
+.dark .recharts-cartesian-grid-horizontal line,
+.dark .recharts-cartesian-grid-vertical line {
+  stroke: rgba(255,255,255,0.06) !important;
+}
+
+/* Smart observation banner */
+.dark .bg-orange-50 {
+  background:   #252525 !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  color:        #d0d0d0 !important;
+}
+
+/* Comparison cards inner pill */
+.dark [style*="#f0fdf4"] { background: rgba(16,185,129,0.12) !important; }
+.dark [style*="#fff1f2"] { background: rgba(244,63,94,0.12)  !important; }
+
+/* Scrollbar */
+.dark ::-webkit-scrollbar-track { background: #1a1a1a; }
+.dark ::-webkit-scrollbar-thumb { background: #333333; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #444444; }
+
+/* Role badge + header controls */
+.dark [style*="rgba(255,255,255,0.85)"] {
+  background:   #2a2a2a !important;
+  border-color: rgba(255,255,255,0.1) !important;
+  color:        #d0d0d0 !important;
+}
+
+/* Nav links */
+.dark .text-orange-800 { color: #d0d0d0 !important; }
+.dark .hover\:bg-orange-50:hover { background: rgba(255,255,255,0.05) !important; }
+.dark .bg-orange-100  { background: #2a2a2a !important; }
+.dark .border-orange-200 { border-color: rgba(255,255,255,0.08) !important; }
+.dark .border-orange-100 { border-color: rgba(255,255,255,0.06) !important; }
+
+/* Mobile transaction cards */
+.dark [style*="rgba(255,255,255,0.92)"] {
+  background:   #252525 !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
 /* ── Glow button ────────────────────────────────────────────── */
 .btn-glow {
   background: linear-gradient(135deg, #f97316, #ec4899);
