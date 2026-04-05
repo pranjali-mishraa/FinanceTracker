@@ -66,19 +66,18 @@ export default function StatCard({ label, value, icon, iconBg, badge, badgeUp })
         </div>
       </div>
 
-      {/* Bottom — value */}
       <span
-        className="font-display"
-        style={{
-          fontSize:      "clamp(22px, 2.5vw, 30px)",
-          fontWeight:    "800",
-          letterSpacing: "-0.03em",
-          lineHeight:    "1",
-          color:         darkMode ? "#f0f0f0" : "#1a0a00",  // ← creamish white in dark
-        }}
-      >
-        {value}
-      </span>
+  style={{
+    fontSize:      "28px",
+    fontWeight:    "800",
+    letterSpacing: "-0.02em",
+    lineHeight:    "1",
+    fontFamily:    "'DM Sans', sans-serif",
+    color:         darkMode ? "#f0f0f0" : "#1a0a00",
+  }}
+>
+  {value}
+</span>
     </div>
   );
 }
