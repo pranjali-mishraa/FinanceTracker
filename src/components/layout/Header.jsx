@@ -136,36 +136,7 @@ export default function Header() {
             <span style={{ color: darkMode ? "#606060" : "#fb923c", fontSize: "12px" }}>▾</span>
           </div>
 
-          {/* Role badge */}
-          <span style={{
-            display:      "inline-flex",
-            alignItems:   "center",
-            gap:          "6px",
-            padding:      "8px 16px",
-            borderRadius: "99px",
-            fontSize:     "13px",
-            fontWeight:   "700",
-            letterSpacing:"0.03em",
-            transition:   "all 0.3s ease",
-            background:   role === "admin"
-              ? "linear-gradient(135deg,#fb923c,#db2777)"
-              : darkMode ? "#2a2a2a" : "rgba(255,255,255,0.9)",
-            color:        role === "admin" ? "#fff"
-              : darkMode ? "#d0d0d0" : "#c2410c",
-            outline:      role === "admin" ? "none"
-              : darkMode ? "1px solid rgba(255,255,255,0.1)" : "1px solid rgba(249,115,22,0.15)",
-            boxShadow:    role === "admin"
-              ? "0 4px 14px rgba(249,115,22,0.35)" : "none",
-          }}>
-            <span style={{
-              width:        "7px",
-              height:       "7px",
-              borderRadius: "50%",
-              background:   role === "admin" ? "#fff" : darkMode ? "#fb923c" : "#f97316",
-              animation:    "pulseDot 1.8s ease-in-out infinite",
-            }} />
-            {role === "admin" ? "Admin" : "Viewer"}
-          </span>
+          
 
           {/* Dark mode toggle */}
           <button

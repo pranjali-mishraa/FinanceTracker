@@ -55,7 +55,7 @@ export default function SummaryCards() {
   const cards = getCards(totalBalance, totalIncome, totalExpenses);
 
   return (
-    <div className="fade-up grid grid-cols-4 gap-5">
+    <div className="fade-up grid grid-cols-4 gap-7">
       {cards.map((card) => (
         <StatCard key={card.label} {...card} />
       ))}

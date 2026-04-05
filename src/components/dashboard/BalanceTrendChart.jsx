@@ -40,7 +40,7 @@ export default function BalanceTrendChart() {
   }
 
   return (
-    <div className="glass rounded-3xl p-6 fade-up-2">
+    <div className="glass rounded-3xl p-8 fade-up-2">
       <div className="flex items-start justify-between mb-6">
         <div>
           <h2 className="font-display text-xl font-bold text-orange-950">

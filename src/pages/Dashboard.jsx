@@ -4,23 +4,20 @@ import SpendingBreakdownChart from "../components/dashboard/SpendingBreakdownCha
 
 export default function Dashboard() {
   return (
-    <div className="flex flex-col gap-7 max-w-7xl mx-auto">
+    <div className="flex flex-col gap-10 max-w-7xl mx-auto px-2">
 
       <div className="fade-up">
-        <h1 className="font-display text-4xl font-bold grad-text leading-tight">
+        <h1 className="font-display text-3xl font-bold grad-text leading-tight">
           Dashboard
         </h1>
-        <p className="text-orange-400  text-center mt-1.5 font-bolder">
+        <p className="text-orange-400 text-sm mt-2 font-medium text-center" style={{ fontWeight: 800 }}>
           Your complete financial overview at a glance 📊
         </p>
       </div>
 
-      {/* Cards — mb-4 gives breathing room before charts */}
-      <div className="mb-4">
-        <SummaryCards />
-      </div>
+      <SummaryCards />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <BalanceTrendChart />
         <SpendingBreakdownChart />
       </div>

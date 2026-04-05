@@ -334,10 +334,7 @@ export default function InsightsPanel() {
                         <span className={`
                           w-6 h-6 rounded-full text-xs font-bold
                           flex items-center justify-center
-                          ${idx === 0 ? "bg-orange-400 text-white"
-                            : idx === 1 ? "bg-orange-300 text-white"
-                            : idx === 2 ? "bg-orange-200 text-orange-800"
-                            : "bg-orange-100 text-orange-500"}
+                          
                         `}>
                           {idx + 1}
                         </span>
